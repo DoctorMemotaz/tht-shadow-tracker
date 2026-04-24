@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THT Shadow Tracker</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Fira+Code:wght@400;500&display=swap');
+        
+        :root {
+            --bg-color: #080808;
+            --surface-color: #121212;
+            --accent-red: #ff3e3e;
+            --text-primary: #e0e0e0;
+            --text-dim: #888888;
+            --terminal-green: #00ff41;
+            --border-color: #222222;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-primary);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+
+        .main-container {
+            flex: 1;
+            max-width: 1000px;
+            margin: 0 auto;
+            width: 90%;
+            padding: 40px 0;
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .title-group h1 {
+            margin: 0;
+            font-size: 20px;
+            letter-spacing: 4px;
+            color: var(--accent-red);
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .title-group p {
+            margin: 4px 0 0;
+            font-size: 12px;
+            color: var(--text-dim);
+            font-family: 'Fira Code', monospace;
+        }
+
+        #statusBadge {
+            padding: 6px 12px;
+            font-size: 10px;
+            border-radius: 4px;
+            background: #1a1a1a;
+            border: 1px solid var(--border-color);
+            text-transform: uppercase;
+            font-weight: 600;
+        }
+
+        .status-active {
+            color: var(--accent-red);
+            border-color: var(--accent-red) !important;
+            box-shadow: 0 0 10px rgba(255, 62, 62, 0.2);
+        }
+
+        .action-bar {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            background: var(--surface-color);
+            color: var(--text-primary);
+            border: 1px solid var(--border-color);
+            padding: 12px 20px;
+            border-radius: 6px;
+            font-family: 'Inter', sans-serif;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        button:hover:not(:disabled) {
+            border-color: var(--text-dim);
+            background: #1a1a1a;
+        }
+
+        button:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .btn-primary {
+            border-color: var(--accent-red);
+            color: var(--accent-red);
+        }
+
+        .btn-primary:hover:not(:disabled) {
+            background: var(--accent-red);
+            color: white;
+        }
+
+        .terminal-window {
+            background: #0d0d0d;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .terminal-header {
+            background: #161616;
+            padding: 10px 16px;
+            font-size: 11px;
+            color: var(--text-dim);
+            font-family: 'Fira Code', monospace;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .terminal-body {
+            padding: 20px;
+            font-family: 'Fira Code', monospace;
+            font-size: 13px;
+            line-height: 1.6;
+            overflow-y: auto;
+            flex: 1;
+        }
+
+        .log-line { margin-bottom: 6px; }
+        .log-time { color: var(--text-dim); font-size: 11px; margin-right: 8px; }
+        .log-sys { color: #569cd6; }
+        .log-prefetch { color: #ce9178; }
+        .log-recent { color: #b5cea8; }
+        .log-path { color: var(--text-primary); }
+
+        footer {
+            padding: 24px;
+            text-align: center;
+            font-size: 11px;
+            color: var(--text-dim);
+            letter-spacing: 1px;
+            border-top: 1px solid var(--border-color);
+            text-transform: uppercase;
+        }
+
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #444; }
+    </style>
+</head>
+<body>
+
+    <div class="main-container">
+        <header>
+            <div class="title-group">
+                <h1>THT Shadow Tracker</h1>
+                <p>OpSec Kalıntı Yönetimi</p>
+            </div>
+            <div id="statusBadge">BEKLEMEDE</div>
+        </header>
+
+        <div class="action-bar">
+            <button id="btnObserver">Gözlem Modunu Başlat</button>
+            <button id="btnAnalyze" disabled>İzleri Analiz Et</button>
+            <button id="btnWipe" class="btn-primary" disabled>Kalıntıları Yok Et</button>
+        </div>
+
+        <div class="terminal-window">
+            <div class="terminal-header">SİSTEM_LOGLARI > Çıktı Konsolu</div>
+            <div class="terminal-body" id="terminal">
+                <div class="log-line"><span class="log-sys">[*] Sistem hazır. Gözlem modunu başlatmak için bekliyor...</span></div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        Copyright &copy; 2026 - TurkHackTeam: Doctor Memotaz
+    </footer>
+
+    <script src="renderer.js"></script>
+</body>
+</html>

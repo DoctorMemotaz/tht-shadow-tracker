@@ -1,0 +1,39 @@
+{
+  "name": "tht-shadow-tracker",
+  "version": "1.0.0",
+  "description": "THT Shadow Tracker - OpSec Framework",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "dist": "electron-builder"
+  },
+  "build": {
+    "appId": "com.tht.shadowtracker",
+    "productName": "THT Shadow Tracker",
+    "copyright": "Copyright © 2026 THT Doctor Memotaz",
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "requestedExecutionLevel": "requireAdministrator"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true
+    },
+    "files": [
+      "**/*",
+      "!node_modules",
+      "!KernelHookModule.cs",
+      "!telemetry_sinkhole.py",
+      "!mem_scraper.go",
+      "!ntfs_mft_parser.rs"
+    ]
+  },
+  "devDependencies": {
+    "electron": "^30.0.0",
+    "electron-builder": "^24.13.3",
+    "javascript-obfuscator": "^5.4.2"
+  }
+}
