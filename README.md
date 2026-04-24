@@ -7,7 +7,13 @@
   <img src="https://img.shields.io/badge/Security-Obfuscated-critical?style=for-the-badge" alt="Security">
 </div>
 
-<br>
+<br> <br>
+
+<div align="center">
+  <img src="https://i.hizliresim.com/hb4rmvl.png" alt="THT Shadow Tracker Preview" width="400">
+</div>
+
+<br> <br>
 
 > **Operasyonel Güvenlik (OpSec) ve Adli Bilişim Karşıtlığı (Anti-Forensics) Aracı**
 > İşletim sisteminin derinliklerinde (Prefetch, Recent, RunMRU, Temp) bırakılan uygulama ve dosya erişim izlerini zaman damgası tabanlı analiz eden ve adli bilişim standartlarında yok eden kapalı kaynak mimarili bir gözetim aracıdır.
@@ -49,3 +55,24 @@ Araç aşağıdaki Windows adli bilişim izlerini tarar ve yok eder:
 ## 🚀 Kurulum ve Derleme (Build)
 
 Uygulamanın Prefetch ve Registry katmanlarına inebilmesi için **Yönetici Hakları (Administrator Privileges)** gereklidir.
+
+### 📥 Direkt İndir (v1: Sadece Windows)
+Kaynak koduyla uğraşmak istemiyorsanız, derlenmiş hazır `.exe` setup dosyasını indirebilirsiniz:
+1. Sağ taraftaki **[Releases](https://github.com/DoctorMemotaz/tht-shadow-tracker/releases)** sekmesine gidin.
+2. En güncel sürüm olan `THT.Shadow.Tracker.Setup.1.0.0.exe` .setup dosyasını indirin ve kurun.
+
+### 💻 Geliştiriciler İçin (Kaynak Kodundan Çalıştırma)
+Projeyi kendi bilgisayarınızda geliştirmek veya incelemek isterseniz:
+
+   ```bash
+   git clone https://github.com/DoctorMemotaz/tht-shadow-tracker.git
+   ```
+   
+   ```npm
+   npm install
+   ```
+
+   ```npm
+   npm start
+   ```
+
