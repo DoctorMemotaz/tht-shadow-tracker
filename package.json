@@ -28,7 +28,9 @@
       "!KernelHookModule.cs",
       "!telemetry_sinkhole.py",
       "!mem_scraper.go",
-      "!ntfs_mft_parser.rs"
+      "!ntfs_mft_parser.rs",
+      "!usn_engine.ps1",
+      "!usn_handler.js"
     ]
   },
   "devDependencies": {
